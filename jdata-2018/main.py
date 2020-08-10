@@ -115,3 +115,10 @@ def fitModel(model, feature1):
 
 # 交叉验证模型
 fitModel(lgb, train)
+
+# test
+lgb.predict()
+
+# y = ax+b
+
+# y = 2x+10
