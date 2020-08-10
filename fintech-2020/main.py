@@ -3,29 +3,34 @@ import numpy as np
 from datetime import date
 
 import warnings
+
 warnings.filterwarnings('ignore')
 
 import lightgbm
 from sklearn.metrics import f1_score, roc_auc_score, classification_report
 from sklearn.model_selection import cross_val_predict
+from pathlib import Path
 
-###########################Load Data####################################
-# 设置数据集文件夹路径/Users/lvyoudashuju/dataset
-DIR_DATA = '/Users/lvyoudashuju/dataset/jdata2018'
+# 设置数据集文件夹路径
+DIR_DATA = '/Users/lvyoudashuju/dataset/fintech2020'
 
 # wa_train.txt 用户网站访问记录数据
-waTrain = pd.read_table(DIR_DATA + '/wa_train.txt', header=None)
-waTrain.columns = ['uid', 'wa_name', 'visit_cnt', 'visit_dura', 'up_flow',
+train_base = pd.read_csv(DIR_DATA + '/train/train_base.csv', header=None)
+train_base.columns = ['uid', 'wa_name', 'visit_cnt', 'visit_dura', 'up_flow',
                    'down_flow', 'wa_type', 'date']
 
-waTest = pd.read_table(DIR_DATA + '/wa_test_a.txt', header=None)
-waTest.columns = ['uid', 'wa_name', 'visit_cnt', 'visit_dura', 'up_flow',
+train_trans = pd.read_csv(DIR_DATA + '/train/train_op.csv', header=None)
+train_trans.columns = ['uid', 'wa_name', 'visit_cnt', 'visit_dura', 'up_flow',
                   'down_flow', 'wa_type', 'date']
 
-waData = pd.concat([waTrain, waTest])
+train_trans = pd.read_csv(DIR_DATA + '/train/train_trans.csv', header=None)
+train_trans.columns = ['uid', 'wa_name', 'visit_cnt', 'visit_dura', 'up_flow',
+                  'down_flow', 'wa_type', 'date']
+
+waData = pd.concat([train_base, train_trans])
 
 # 标签uid_train.txt  0:4099 1:900
-uidTrain = pd.read_table(DIR_DATA + '/uid_train.txt', header=None)
+uidTrain = pd.read_csv(DIR_DATA + '/uid_train.txt', header=None)
 uidTrain.columns = ['uid', 'label']
 
 uidTest = pd.DataFrame()
